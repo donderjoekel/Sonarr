@@ -53,8 +53,8 @@ namespace NzbDrone.Core.Test.TvTests
         private void GivenNewSeriesInfo(Series series)
         {
             Mocker.GetMock<IProvideSeriesInfo>()
-                  .Setup(s => s.GetSeriesInfo(_series.TvdbId))
-                  .Returns(new Tuple<Series, List<Episode>>(series, new List<Episode>()));
+                .Setup(s => s.GetSeriesInfo(_series.TvdbId, false))
+                .Returns(new Tuple<Series, List<Episode>>(series, new List<Episode>()));
         }
 
         [Test]
