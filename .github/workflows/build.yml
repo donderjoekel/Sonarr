@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - develop
-      - main
+      - mangarr
     paths-ignore:
       - 'src/Sonarr.Api.*/openapi.json'
   pull_request:
@@ -216,7 +216,7 @@ jobs:
         binary_path: ${{ matrix.binary_path }}
 
   deploy:
-    if: ${{ github.ref_name == 'develop' || github.ref_name == 'main' }}
+    if: ${{ github.ref_name == 'develop' || github.ref_name == 'mangarr' }}
     needs: [backend, frontend, unit_test, unit_test_postgres, integration_test]
     secrets: inherit
     uses: ./.github/workflows/deploy.yml
@@ -229,7 +229,7 @@ jobs:
   notify:
     name: Discord Notification
     needs: [backend, frontend, unit_test, unit_test_postgres, integration_test, deploy]
-    if: ${{ !cancelled() && (github.ref_name == 'develop' || github.ref_name == 'main') }}
+    if: ${{ !cancelled() && (github.ref_name == 'develop' || github.ref_name == 'mangarr') }}
     env:
       STATUS: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
     runs-on: ubuntu-latest
