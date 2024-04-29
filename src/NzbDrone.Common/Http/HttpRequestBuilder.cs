@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Common.Http
 {
@@ -32,6 +33,8 @@ namespace NzbDrone.Common.Http
         public List<HttpFormData> FormData { get; private set; }
         public Action<HttpRequest> PostProcess { get; set; }
 
+        public Dictionary<string, object> Body { get; set; }
+
         public HttpRequestBuilder(string baseUrl)
         {
             BaseUrl = new HttpUri(baseUrl);
@@ -42,6 +45,7 @@ namespace NzbDrone.Common.Http
             Segments = new Dictionary<string, string>();
             Headers = new HttpHeader();
             Cookies = new Dictionary<string, string>();
+            Body = new Dictionary<string, object>();
             FormData = new List<HttpFormData>();
             LogHttpError = true;
         }
@@ -123,6 +127,7 @@ namespace NzbDrone.Common.Http
             }
 
             ApplyFormData(request);
+            ApplyBody(request);
         }
 
         public virtual HttpRequest Build()
@@ -236,6 +241,23 @@ namespace NzbDrone.Common.Http
                     request.ContentSummary = urlencoded;
                 }
             }
+        }
+
+        protected virtual void ApplyBody(HttpRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (Body.Empty())
+            {
+                return;
+            }
+
+            var body = Body.ToJson();
+
+            request.SetContent(body);
         }
 
         public virtual HttpRequestBuilder Resource(string resourceUrl)
@@ -388,6 +410,13 @@ namespace NzbDrone.Common.Http
                 ContentType = contentType
             });
 
+            return this;
+        }
+
+        public virtual HttpRequestBuilder AddBodyProperty(string key, object value)
+        {
+            Body ??= new Dictionary<string, object>();
+            Body[key] = value;
             return this;
         }
     }

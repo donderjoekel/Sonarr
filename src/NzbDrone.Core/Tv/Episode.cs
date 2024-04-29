@@ -11,12 +11,15 @@ namespace NzbDrone.Core.Tv
         public Episode()
         {
             Images = new List<MediaCover.MediaCover>();
+            Ratings = new Ratings();
         }
 
         public const string AIR_DATE_FORMAT = "yyyy-MM-dd";
 
         public int SeriesId { get; set; }
-        public int TvdbId { get; set; }
+
+        // MANGARR: This has been repurposed to be the Baka Updates ID
+        public long TvdbId { get; set; }
         public int EpisodeFileId { get; set; }
         public int SeasonNumber { get; set; }
         public int EpisodeNumber { get; set; }

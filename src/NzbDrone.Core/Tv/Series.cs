@@ -17,13 +17,16 @@ namespace NzbDrone.Core.Tv
             Seasons = new List<Season>();
             Tags = new HashSet<int>();
             OriginalLanguage = Language.English;
+            AlternateTitles = new List<string>();
         }
 
-        public int TvdbId { get; set; }
+        // MANGARR: This has been repurposed to be the Baka Updates ID
+        public long TvdbId { get; set; }
         public int TvRageId { get; set; }
         public int TvMazeId { get; set; }
         public string ImdbId { get; set; }
         public string Title { get; set; }
+        public List<string> AlternateTitles { get; set; }
         public string CleanTitle { get; set; }
         public string SortTitle { get; set; }
         public SeriesStatusType Status { get; set; }

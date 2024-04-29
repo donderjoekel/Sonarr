@@ -23,6 +23,7 @@ using Sonarr.Http;
 using Sonarr.Http.Extensions;
 using Sonarr.Http.REST;
 using Sonarr.Http.REST.Attributes;
+using RuleBuilderExtensions = Sonarr.Http.Validation.RuleBuilderExtensions;
 
 namespace Sonarr.Api.V3.Series
 {
@@ -71,7 +72,7 @@ namespace Sonarr.Api.V3.Series
             _commandQueueManager = commandQueueManager;
             _rootFolderService = rootFolderService;
 
-            Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.QualityProfileId));
+            RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.QualityProfileId));
 
             SharedValidator.RuleFor(s => s.Path)
                 .Cascade(CascadeMode.Stop)

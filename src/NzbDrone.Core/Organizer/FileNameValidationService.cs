@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FluentValidation;
 using FluentValidation.Results;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
@@ -30,8 +31,14 @@ namespace NzbDrone.Core.Organizer
                 return validationFailure;
             }
 
-            if (!ValidateSeasonAndEpisodeNumbers(sampleResult.Episodes, parsedEpisodeInfo))
+            if (!ValidateEpisodeNumber(sampleResult.Episodes, parsedEpisodeInfo))
             {
+                return validationFailure;
+            }
+
+            if (!ValidateSeasonNumber(sampleResult.Episodes, parsedEpisodeInfo))
+            {
+                validationFailure.Severity = Severity.Warning;
                 return validationFailure;
             }
 
@@ -96,6 +103,26 @@ namespace NzbDrone.Core.Organizer
             }
 
             return null;
+        }
+
+        private bool ValidateEpisodeNumber(List<Episode> episodes, ParsedEpisodeInfo parsedEpisodeInfo)
+        {
+            if (!parsedEpisodeInfo.EpisodeNumbers.OrderBy(e => e).SequenceEqual(episodes.Select(e => e.EpisodeNumber).OrderBy(e => e)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidateSeasonNumber(List<Episode> episodes, ParsedEpisodeInfo parsedEpisodeInfo)
+        {
+            if (parsedEpisodeInfo.SeasonNumber != episodes.First().SeasonNumber)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private bool ValidateSeasonAndEpisodeNumbers(List<Episode> episodes, ParsedEpisodeInfo parsedEpisodeInfo)

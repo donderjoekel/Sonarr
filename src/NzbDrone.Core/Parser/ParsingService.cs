@@ -14,11 +14,11 @@ namespace NzbDrone.Core.Parser
     public interface IParsingService
     {
         Series GetSeries(string title);
-        RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null);
+        RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, long tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null);
         RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, Series series);
         RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int seriesId, IEnumerable<int> episodeIds);
         List<Episode> GetEpisodes(ParsedEpisodeInfo parsedEpisodeInfo, Series series, bool sceneSource, SearchCriteriaBase searchCriteria = null);
-        ParsedEpisodeInfo ParseSpecialEpisodeTitle(ParsedEpisodeInfo parsedEpisodeInfo, string releaseTitle, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null);
+        ParsedEpisodeInfo ParseSpecialEpisodeTitle(ParsedEpisodeInfo parsedEpisodeInfo, string releaseTitle, long tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null);
         ParsedEpisodeInfo ParseSpecialEpisodeTitle(ParsedEpisodeInfo parsedEpisodeInfo, string releaseTitle, Series series);
     }
 
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Parser
         private Series GetSeriesByAllTitles(ParsedEpisodeInfo parsedEpisodeInfo)
         {
             Series foundSeries = null;
-            int? foundTvdbId = null;
+            long? foundTvdbId = null;
 
             // Match each title individually, they must all resolve to the same tvdbid
             foreach (var title in parsedEpisodeInfo.SeriesTitleInfo.AllTitles)
@@ -116,7 +116,7 @@ namespace NzbDrone.Core.Parser
             return foundSeries;
         }
 
-        public RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null)
+        public RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, long tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null)
         {
             return Map(parsedEpisodeInfo, tvdbId, tvRageId, null, searchCriteria);
         }
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Parser
                    };
         }
 
-        private RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, Series series, SearchCriteriaBase searchCriteria)
+        private RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, long tvdbId, int tvRageId, Series series, SearchCriteriaBase searchCriteria)
         {
             var sceneMapping = _sceneMappingService.FindSceneMapping(parsedEpisodeInfo.SeriesTitle, parsedEpisodeInfo.ReleaseTitle, parsedEpisodeInfo.SeasonNumber);
 
@@ -178,6 +178,52 @@ namespace NzbDrone.Core.Parser
                 {
                     series = seriesMatch.Series;
                     remoteEpisode.SeriesMatchType = seriesMatch.MatchType;
+                }
+                else
+                {
+                    var cleanedSeriesTitle = parsedEpisodeInfo.SeriesTitle.CleanSeriesTitle();
+
+                    if (searchCriteria == null || searchCriteria.Episodes.Empty())
+                    {
+                        var matchedSeries = _seriesService.GetAllSeries().FirstOrDefault(x =>
+                            x.AlternateTitles.Any(y => y.CleanSeriesTitle() == cleanedSeriesTitle));
+
+                        if (matchedSeries != null)
+                        {
+                            series = matchedSeries;
+                            remoteEpisode.SeriesMatchType = SeriesMatchType.Alias;
+                        }
+                    }
+                    else
+                    {
+                        var foundMatch = false;
+                        Series foundSeries = null;
+                        foreach (var episode in searchCriteria.Episodes)
+                        {
+                            foundSeries = _seriesService.GetSeries(episode.SeriesId);
+
+                            foreach (var alternateTitle in foundSeries.AlternateTitles)
+                            {
+                                var cleanedAlternateTitle = alternateTitle.CleanSeriesTitle();
+                                if (cleanedSeriesTitle == cleanedAlternateTitle)
+                                {
+                                    foundMatch = true;
+                                    break;
+                                }
+                            }
+
+                            if (foundMatch)
+                            {
+                                break;
+                            }
+                        }
+
+                        if (foundMatch)
+                        {
+                            series = foundSeries;
+                            remoteEpisode.SeriesMatchType = SeriesMatchType.Alias;
+                        }
+                    }
                 }
             }
 
@@ -273,7 +319,7 @@ namespace NzbDrone.Core.Parser
             return GetStandardEpisodes(series, parsedEpisodeInfo, mappedSeasonNumber, sceneSource, searchCriteria);
         }
 
-        public ParsedEpisodeInfo ParseSpecialEpisodeTitle(ParsedEpisodeInfo parsedEpisodeInfo, string releaseTitle, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null)
+        public ParsedEpisodeInfo ParseSpecialEpisodeTitle(ParsedEpisodeInfo parsedEpisodeInfo, string releaseTitle, long tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null)
         {
             if (searchCriteria != null)
             {
@@ -355,7 +401,7 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
-        private FindSeriesResult FindSeries(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SceneMapping sceneMapping, SearchCriteriaBase searchCriteria)
+        private FindSeriesResult FindSeries(ParsedEpisodeInfo parsedEpisodeInfo, long tvdbId, int tvRageId, SceneMapping sceneMapping, SearchCriteriaBase searchCriteria)
         {
             Series series = null;
 

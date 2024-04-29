@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Notifications.Discord.Payloads;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.Validation;
@@ -190,14 +190,15 @@ namespace NzbDrone.Core.Notifications.Discord
                         discordField.Inline = true;
                         discordField.Value = message.EpisodeFile.Quality.Quality.Name;
                         break;
-                    case DiscordImportFieldType.Codecs:
-                        discordField.Name = "Codecs";
-                        discordField.Inline = true;
-                        discordField.Value = string.Format("{0} / {1} {2}",
-                            MediaInfoFormatter.FormatVideoCodec(message.EpisodeFile.MediaInfo, null),
-                            MediaInfoFormatter.FormatAudioCodec(message.EpisodeFile.MediaInfo, null),
-                            MediaInfoFormatter.FormatAudioChannels(message.EpisodeFile.MediaInfo));
-                        break;
+
+                    // case DiscordImportFieldType.Codecs:
+                    //     discordField.Name = "Codecs";
+                    //     discordField.Inline = true;
+                    //     discordField.Value = string.Format("{0} / {1} {2}",
+                    //         MediaInfoFormatter.FormatVideoCodec(message.EpisodeFile.MediaInfo, null),
+                    //         MediaInfoFormatter.FormatAudioCodec(message.EpisodeFile.MediaInfo, null),
+                    //         MediaInfoFormatter.FormatAudioChannels(message.EpisodeFile.MediaInfo));
+                    //     break;
                     case DiscordImportFieldType.Group:
                         discordField.Name = "Group";
                         discordField.Value = message.EpisodeFile.ReleaseGroup;
@@ -207,14 +208,15 @@ namespace NzbDrone.Core.Notifications.Discord
                         discordField.Value = BytesToString(message.EpisodeFile.Size);
                         discordField.Inline = true;
                         break;
-                    case DiscordImportFieldType.Languages:
-                        discordField.Name = "Languages";
-                        discordField.Value = message.EpisodeFile.MediaInfo.AudioLanguages.ConcatToString("/");
-                        break;
-                    case DiscordImportFieldType.Subtitles:
-                        discordField.Name = "Subtitles";
-                        discordField.Value = message.EpisodeFile.MediaInfo.Subtitles.ConcatToString("/");
-                        break;
+
+                    // case DiscordImportFieldType.Languages:
+                    //     discordField.Name = "Languages";
+                    //     discordField.Value = message.EpisodeFile.MediaInfo.AudioLanguages.ConcatToString("/");
+                    //     break;
+                    // case DiscordImportFieldType.Subtitles:
+                    //     discordField.Name = "Subtitles";
+                    //     discordField.Value = message.EpisodeFile.MediaInfo.Subtitles.ConcatToString("/");
+                    //     break;
                     case DiscordImportFieldType.Release:
                         discordField.Name = "Release";
                         discordField.Value = string.Format("```{0}```", message.EpisodeFile.SceneName);
@@ -371,7 +373,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 Title = healthCheck.Source.Name,
                 Description = healthCheck.Message,
                 Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
-                Color = healthCheck.Type == HealthCheck.HealthCheckResult.Warning ? (int)DiscordColors.Warning : (int)DiscordColors.Danger
+                Color = healthCheck.Type == HealthCheckResult.Warning ? (int)DiscordColors.Warning : (int)DiscordColors.Danger
             };
 
             var payload = CreatePayload(null, new List<Embed> { embed });

@@ -48,7 +48,9 @@ namespace Sonarr.Api.V3.Series
 
         public bool UseSceneNumbering { get; set; }
         public int Runtime { get; set; }
-        public int TvdbId { get; set; }
+
+        // MANGARR: This has been repurposed to be the Baka Updates ID
+        public long TvdbId { get; set; }
         public int TvRageId { get; set; }
         public int TvMazeId { get; set; }
         public DateTime? FirstAired { get; set; }

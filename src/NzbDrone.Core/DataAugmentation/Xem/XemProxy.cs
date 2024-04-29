@@ -12,7 +12,7 @@ namespace NzbDrone.Core.DataAugmentation.Xem
     public interface IXemProxy
     {
         List<int> GetXemSeriesIds();
-        List<XemSceneTvdbMapping> GetSceneTvdbMappings(int id);
+        List<XemSceneTvdbMapping> GetSceneTvdbMappings(long id);
         List<SceneMapping> GetSceneTvdbNames();
     }
 
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.DataAugmentation.Xem
             }).Where(t => t > 0).ToList();
         }
 
-        public List<XemSceneTvdbMapping> GetSceneTvdbMappings(int id)
+        public List<XemSceneTvdbMapping> GetSceneTvdbMappings(long id)
         {
             _logger.Debug("Fetching Mappings for: {0}", id);
 

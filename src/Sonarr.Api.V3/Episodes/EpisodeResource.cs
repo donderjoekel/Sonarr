@@ -13,7 +13,9 @@ namespace Sonarr.Api.V3.Episodes
     public class EpisodeResource : RestResource
     {
         public int SeriesId { get; set; }
-        public int TvdbId { get; set; }
+
+        // MANGARR: This has been repurposed to be the Baka Updates ID
+        public long TvdbId { get; set; }
         public int EpisodeFileId { get; set; }
         public int SeasonNumber { get; set; }
         public int EpisodeNumber { get; set; }

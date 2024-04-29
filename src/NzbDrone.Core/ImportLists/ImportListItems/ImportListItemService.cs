@@ -11,7 +11,7 @@ namespace NzbDrone.Core.ImportLists.ImportListItems
     {
         List<ImportListItemInfo> GetAllForLists(List<int> listIds);
         int SyncSeriesForList(List<ImportListItemInfo> listSeries, int listId);
-        bool Exists(int tvdbId, string imdbId);
+        bool Exists(long tvdbId, string imdbId);
     }
 
     public class ImportListItemService : IImportListItemService, IHandleAsync<ProviderDeletedEvent<IImportList>>
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.ImportLists.ImportListItems
             _importListSeriesRepository.DeleteMany(seriesOnList);
         }
 
-        public bool Exists(int tvdbId, string imdbId)
+        public bool Exists(long tvdbId, string imdbId)
         {
             return _importListSeriesRepository.Exists(tvdbId, imdbId);
         }

@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Validation.Paths
                 return true;
             }
 
-            var tvdbId = Convert.ToInt32(context.PropertyValue.ToString());
+            var tvdbId = Convert.ToInt64(context.PropertyValue.ToString());
 
             return !_seriesService.AllSeriesTvdbIds().Any(s => s == tvdbId);
         }

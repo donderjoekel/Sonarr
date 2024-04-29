@@ -7,7 +7,7 @@ namespace Sonarr.Api.V3.ImportLists
 {
     public class ImportListExclusionResource : RestResource
     {
-        public int TvdbId { get; set; }
+        public long TvdbId { get; set; }
         public string Title { get; set; }
     }
 

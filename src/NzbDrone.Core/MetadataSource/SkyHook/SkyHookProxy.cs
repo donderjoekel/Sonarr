@@ -17,7 +17,9 @@ using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries
+    public class SkyHookProxy
+
+        // : IProvideSeriesInfo, ISearchForNewSeries
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -67,6 +69,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var series = MapSeries(httpResponse.Resource);
 
             return new Tuple<Series, List<Episode>>(series, episodes.ToList());
+        }
+
+        public Tuple<Series, List<Episode>> GetSeriesInfo(long bakaUpdatesId)
+        {
+            throw new NotImplementedException("Use GetSeriesInfo(int tvdbSeriesId) instead.");
         }
 
         public List<Series> SearchForNewSeriesByImdbId(string imdbId)
@@ -232,10 +239,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 series.Certification = show.ContentRating.ToUpper();
             }
 
-            if (_dailySeriesService.IsDailySeries(series.TvdbId))
-            {
-                series.SeriesType = SeriesTypes.Daily;
-            }
+            // if (_dailySeriesService.IsDailySeries(series.TvdbId))
+            // {
+            //     series.SeriesType = SeriesTypes.Daily;
+            // }
 
             series.Actors = show.Actors.Select(MapActors).ToList();
             series.Seasons = show.Seasons.Select(MapSeason).ToList();

@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Indexers.HDBits
 
     public class TvdbInfo
     {
-        public int? Id { get; set; }
+        public long? Id { get; set; }
         public int? Season { get; set; }
         public int? Episode { get; set; }
     }

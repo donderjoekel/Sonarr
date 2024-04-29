@@ -117,7 +117,7 @@ namespace NzbDrone.Core.Tv
 
             try
             {
-                tuple = _seriesInfo.GetSeriesInfo(newSeries.TvdbId);
+                tuple = _seriesInfo.GetSeriesInfo(newSeries.TvdbId, true);
             }
             catch (SeriesNotFoundException)
             {

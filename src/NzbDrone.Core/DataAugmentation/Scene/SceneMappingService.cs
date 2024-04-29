@@ -14,9 +14,9 @@ namespace NzbDrone.Core.DataAugmentation.Scene
 {
     public interface ISceneMappingService
     {
-        List<string> GetSceneNames(int tvdbId, List<int> seasonNumbers, List<int> sceneSeasonNumbers);
-        int? FindTvdbId(string sceneTitle, string releaseTitle, int sceneSeasonNumber);
-        List<SceneMapping> FindByTvdbId(int tvdbId);
+        List<string> GetSceneNames(long tvdbId, List<int> seasonNumbers, List<int> sceneSeasonNumbers);
+        long? FindTvdbId(string sceneTitle, string releaseTitle, int sceneSeasonNumber);
+        List<SceneMapping> FindByTvdbId(long tvdbId);
         SceneMapping FindSceneMapping(string sceneTitle, string releaseTitle, int sceneSeasonNumber);
         int? GetSceneSeasonNumber(string seriesTitle, string releaseTitle);
     }
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.DataAugmentation.Scene
             _findByTvdbIdCache = cacheManager.GetCacheDictionary<List<SceneMapping>>(GetType(), "find_tvdb_id");
         }
 
-        public List<string> GetSceneNames(int tvdbId, List<int> seasonNumbers, List<int> sceneSeasonNumbers)
+        public List<string> GetSceneNames(long tvdbId, List<int> seasonNumbers, List<int> sceneSeasonNumbers)
         {
             var mappings = FindByTvdbId(tvdbId);
 
@@ -68,12 +68,12 @@ namespace NzbDrone.Core.DataAugmentation.Scene
             return names;
         }
 
-        public int? FindTvdbId(string seriesTitle, string releaseTitle, int sceneSeasonNumber)
+        public long? FindTvdbId(string seriesTitle, string releaseTitle, int sceneSeasonNumber)
         {
             return FindSceneMapping(seriesTitle, releaseTitle, sceneSeasonNumber)?.TvdbId;
         }
 
-        public List<SceneMapping> FindByTvdbId(int tvdbId)
+        public List<SceneMapping> FindByTvdbId(long tvdbId)
         {
             if (_findByTvdbIdCache.Count == 0)
             {
