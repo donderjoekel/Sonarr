@@ -21,8 +21,8 @@ concurrency:
 env:
   FRAMEWORK: net6.0
   RAW_BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-  SONARR_MAJOR_VERSION: 4
-  VERSION: 4.0.4
+  SONARR_MAJOR_VERSION: 0
+  VERSION: 0.1.0
 
 jobs:
   backend:
