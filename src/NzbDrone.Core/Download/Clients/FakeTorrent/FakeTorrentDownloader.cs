@@ -3,10 +3,13 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.ComicFormat;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Organizer;
 
@@ -26,10 +29,11 @@ public class FakeTorrentDownloader : IFakeTorrentDownloader
     private readonly IDiskProvider _diskProvider;
     private readonly IArchiveService _archiveService;
     private readonly IAppFolderInfo _appFolderInfo;
+    private readonly IComicInfoService _comicInfoService;
 
     private CancellationTokenSource _cancellationTokenSource;
 
-    public FakeTorrentDownloader(IHttpClient httpClient, ITorrentFilePathsReader torrentFilePathsReader, IFakeTorrentDownloadQueue downloadQueue, IDiskProvider diskProvider, IArchiveService archiveService, IAppFolderInfo appFolderInfo)
+    public FakeTorrentDownloader(IHttpClient httpClient, ITorrentFilePathsReader torrentFilePathsReader, IFakeTorrentDownloadQueue downloadQueue, IDiskProvider diskProvider, IArchiveService archiveService, IAppFolderInfo appFolderInfo, IComicInfoService comicInfoService)
     {
         _httpClient = httpClient;
         _torrentFilePathsReader = torrentFilePathsReader;
@@ -37,6 +41,7 @@ public class FakeTorrentDownloader : IFakeTorrentDownloader
         _diskProvider = diskProvider;
         _archiveService = archiveService;
         _appFolderInfo = appFolderInfo;
+        _comicInfoService = comicInfoService;
     }
 
     private async Task DownloadTask(CancellationToken ct)
@@ -78,6 +83,18 @@ public class FakeTorrentDownloader : IFakeTorrentDownloader
                 pages.Add(downloadPath);
                 current.PagesDownloaded++;
                 await Task.Delay(100, ct).ConfigureAwait(false);
+            }
+
+            var comicInfo = _comicInfoService.CreateComicInfo(current, mediaCover != null);
+            using (var stream = _diskProvider.OpenWriteStream(Path.Combine(downloadFolder, "ComicInfo.xml")))
+            {
+                var serializer = new XmlSerializer(typeof(ComicInfo));
+                var settings = new XmlWriterSettings() { Async = true, Indent = true };
+                using (var writer = XmlWriter.Create(stream, settings))
+                {
+                    serializer.Serialize(writer, comicInfo);
+                    await writer.FlushAsync();
+                }
             }
 
             _archiveService.CreateZip(current.CbzPath, _diskProvider.GetFiles(downloadFolder, false));
