@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
@@ -30,10 +32,11 @@ public class FakeTorrentDownloader : IFakeTorrentDownloader
     private readonly IArchiveService _archiveService;
     private readonly IAppFolderInfo _appFolderInfo;
     private readonly IComicInfoService _comicInfoService;
+    private readonly Logger _logger;
 
     private CancellationTokenSource _cancellationTokenSource;
 
-    public FakeTorrentDownloader(IHttpClient httpClient, ITorrentFilePathsReader torrentFilePathsReader, IFakeTorrentDownloadQueue downloadQueue, IDiskProvider diskProvider, IArchiveService archiveService, IAppFolderInfo appFolderInfo, IComicInfoService comicInfoService)
+    public FakeTorrentDownloader(IHttpClient httpClient, ITorrentFilePathsReader torrentFilePathsReader, IFakeTorrentDownloadQueue downloadQueue, IDiskProvider diskProvider, IArchiveService archiveService, IAppFolderInfo appFolderInfo, IComicInfoService comicInfoService, Logger logger)
     {
         _httpClient = httpClient;
         _torrentFilePathsReader = torrentFilePathsReader;
@@ -42,6 +45,7 @@ public class FakeTorrentDownloader : IFakeTorrentDownloader
         _archiveService = archiveService;
         _appFolderInfo = appFolderInfo;
         _comicInfoService = comicInfoService;
+        _logger = logger;
     }
 
     private async Task DownloadTask(CancellationToken ct)
@@ -54,55 +58,65 @@ public class FakeTorrentDownloader : IFakeTorrentDownloader
                 continue;
             }
 
-            current.Status = DownloadItemStatus.Downloading;
-            var filePathsFromTorrent = _torrentFilePathsReader.GetFilePathsFromTorrent(current.TorrentPath).ToList();
-            current.TotalPages = filePathsFromTorrent.Count;
-
-            var downloadFolder = Path.Combine(_appFolderInfo.TempFolder,
-                "FakeTorrent",
-                "Downloads",
-                FileNameBuilder.CleanFileName(current.Episode.ParsedEpisodeInfo.ReleaseTitle));
-
-            _diskProvider.EnsureFolder(downloadFolder);
-
-            var mediaCover = current.Episode.Series.Images.FirstOrDefault();
-            if (mediaCover != null)
+            try
             {
-                await _httpClient
-                    .DownloadFileAsync(mediaCover.RemoteUrl, Path.Combine(downloadFolder, "Page_0.png"))
-                    .ConfigureAwait(false);
+                await DownloadItem(current, ct).ConfigureAwait(false);
+                current.Status = DownloadItemStatus.Completed;
             }
-
-            var pages = new List<string>();
-
-            for (var i = 0; i < filePathsFromTorrent.Count; i++)
+            catch (Exception e)
             {
-                var url = filePathsFromTorrent[i];
-                var downloadPath = Path.Combine(downloadFolder, "Page_" + (i + 1) + ".png");
-                await _httpClient.DownloadFileAsync(url, downloadPath).ConfigureAwait(false);
-                pages.Add(downloadPath);
-                current.PagesDownloaded++;
-                await Task.Delay(100, ct).ConfigureAwait(false);
+                current.Status = DownloadItemStatus.Failed;
+                _logger.Error(e, "Failed to download item");
             }
-
-            var comicInfo = _comicInfoService.CreateComicInfo(current, mediaCover != null);
-            using (var stream = _diskProvider.OpenWriteStream(Path.Combine(downloadFolder, "ComicInfo.xml")))
-            {
-                var serializer = new XmlSerializer(typeof(ComicInfo));
-                var settings = new XmlWriterSettings() { Async = true, Indent = true };
-                using (var writer = XmlWriter.Create(stream, settings))
-                {
-                    serializer.Serialize(writer, comicInfo);
-                    await writer.FlushAsync();
-                }
-            }
-
-            _archiveService.CreateZip(current.CbzPath, _diskProvider.GetFiles(downloadFolder, false));
-            _downloadQueue.Complete(current);
-            _diskProvider.DeleteFolder(downloadFolder, true);
-
-            current.Status = DownloadItemStatus.Completed;
         }
+    }
+
+    private async Task DownloadItem(FakeTorrentDownloadInfo current, CancellationToken ct)
+    {
+        current.Status = DownloadItemStatus.Downloading;
+        var filePathsFromTorrent = _torrentFilePathsReader.GetFilePathsFromTorrent(current.TorrentPath).ToList();
+        current.TotalPages = filePathsFromTorrent.Count;
+
+        var downloadFolder = Path.Combine(_appFolderInfo.TempFolder,
+            "FakeTorrent",
+            "Downloads",
+            FileNameBuilder.CleanFileName(current.Episode.ParsedEpisodeInfo.ReleaseTitle));
+
+        _diskProvider.EnsureFolder(downloadFolder);
+
+        var mediaCover = current.Episode.Series.Images.FirstOrDefault();
+        if (mediaCover != null)
+        {
+            await _httpClient
+                .DownloadFileAsync(mediaCover.RemoteUrl, Path.Combine(downloadFolder, "Page_0.png"))
+                .ConfigureAwait(false);
+        }
+
+        var pages = new List<string>();
+
+        for (var i = 0; i < filePathsFromTorrent.Count; i++)
+        {
+            var url = filePathsFromTorrent[i];
+            var downloadPath = Path.Combine(downloadFolder, "Page_" + (i + 1) + ".png");
+            await _httpClient.DownloadFileAsync(url, downloadPath).ConfigureAwait(false);
+            pages.Add(downloadPath);
+            current.PagesDownloaded++;
+            await Task.Delay(100, ct).ConfigureAwait(false);
+        }
+
+        var comicInfo = _comicInfoService.CreateComicInfo(current, mediaCover != null);
+        await using (var stream = _diskProvider.OpenWriteStream(Path.Combine(downloadFolder, "ComicInfo.xml")))
+        {
+            var serializer = new XmlSerializer(typeof(ComicInfo));
+            var settings = new XmlWriterSettings() { Async = true, Indent = true };
+            await using var writer = XmlWriter.Create(stream, settings);
+            serializer.Serialize(writer, comicInfo);
+            await writer.FlushAsync().ConfigureAwait(false);
+        }
+
+        _archiveService.CreateZip(current.CbzPath, _diskProvider.GetFiles(downloadFolder, false));
+        _downloadQueue.Complete(current);
+        _diskProvider.DeleteFolder(downloadFolder, true);
     }
 
     public void Start()
