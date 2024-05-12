@@ -458,7 +458,9 @@ public class BakaUpdatesProxy : ISearchForNewSeries, IProvideSeriesInfo
             TvdbId = record.Id,
             EpisodeNumber = chapterNumber,
             Title = "Chapter " + chapterNumber,
-            SeasonNumber = record.Volume.ParseInt32() ?? 1,
+
+            // SeasonNumber = record.Volume.ParseInt32() ?? 1,
+            SeasonNumber = 1,
             AirDate = record.ReleaseDate,
             AirDateUtc = DateTime.ParseExact(record.ReleaseDate, Episode.AIR_DATE_FORMAT, CultureInfo.InvariantCulture),
 
