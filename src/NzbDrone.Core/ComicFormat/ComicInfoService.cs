@@ -20,7 +20,7 @@ public class ComicInfoService : IComicInfoService
                     downloadInfo.Episode.Episodes.First().EpisodeNumber,
             Summary = downloadInfo.Episode.Series.Overview,
             PageCount = downloadInfo.TotalPages,
-            Web = "https://mangaupdates.com/series/" + downloadInfo.Episode.Series.TvdbId,
+            Web = "https://mangaupdates.com/series/" + downloadInfo.Episode.Series.TitleSlug,
             Genres = string.Join(',', downloadInfo.Episode.Series.Genres),
             Pages = CreatePages(downloadInfo, hasCover)
         };
