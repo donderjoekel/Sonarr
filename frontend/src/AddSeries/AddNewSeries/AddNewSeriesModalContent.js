@@ -1,3 +1,4 @@
+import { Markup } from 'interweave';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import SeriesMonitoringOptionsPopoverContent from 'AddSeries/SeriesMonitoringOptionsPopoverContent';
@@ -113,7 +114,7 @@ class AddNewSeriesModalContent extends Component {
               {
                 overview ?
                   <div className={styles.overview}>
-                    {overview}
+                    <Markup content={overview} />
                   </div> :
                   null
               }
