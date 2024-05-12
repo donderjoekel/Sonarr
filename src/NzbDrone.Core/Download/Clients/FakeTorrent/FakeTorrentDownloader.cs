@@ -60,12 +60,20 @@ public class FakeTorrentDownloader : IFakeTorrentDownloader
 
             _diskProvider.EnsureFolder(downloadFolder);
 
+            var mediaCover = current.Episode.Series.Images.FirstOrDefault();
+            if (mediaCover != null)
+            {
+                await _httpClient
+                    .DownloadFileAsync(mediaCover.RemoteUrl, Path.Combine(downloadFolder, "Page_0.png"))
+                    .ConfigureAwait(false);
+            }
+
             var pages = new List<string>();
 
             for (var i = 0; i < filePathsFromTorrent.Count; i++)
             {
                 var url = filePathsFromTorrent[i];
-                var downloadPath = Path.Combine(downloadFolder, "Page_" + i + ".png");
+                var downloadPath = Path.Combine(downloadFolder, "Page_" + (i + 1) + ".png");
                 await _httpClient.DownloadFileAsync(url, downloadPath).ConfigureAwait(false);
                 pages.Add(downloadPath);
                 current.PagesDownloaded++;
