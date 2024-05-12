@@ -336,7 +336,7 @@ namespace NzbDrone.Core.Indexers
 
             try
             {
-                return parser.ParseResponse(response).ToList();
+               return parser.ParseResponse(response).ToList();
             }
             catch (Exception ex)
             {
