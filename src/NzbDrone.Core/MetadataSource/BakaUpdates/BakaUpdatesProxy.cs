@@ -62,16 +62,12 @@ public class BakaUpdatesProxy : ISearchForNewSeries, IProvideSeriesInfo
             return false;
         }
 
-        _logger.Warn("Found type: {Type}", resource.Record.Type);
-
         foreach (var genreResource in resource.Record.Genres)
         {
             if (genreResource.Genre.EqualsIgnoreCase("adult"))
             {
                 return false;
             }
-
-            _logger.Warn("Found genre: {Genre}", genreResource.Genre);
         }
 
         return true;
