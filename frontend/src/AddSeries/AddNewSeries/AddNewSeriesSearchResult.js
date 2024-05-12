@@ -1,3 +1,4 @@
+import { Markup } from 'interweave';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import HeartRating from 'Components/HeartRating';
@@ -189,7 +190,7 @@ class AddNewSeriesSearchResult extends Component {
             </div>
 
             <div className={styles.overview}>
-              {overview}
+              <Markup content={overview} />
             </div>
 
             <MetadataAttribution />
