@@ -121,6 +121,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'useAlternateTitlesForSearch',
+      label: () => translate('UseAlternateTitlesForSearch'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'episodeProgress',
       label: () => translate('Episodes'),
       isSortable: true,

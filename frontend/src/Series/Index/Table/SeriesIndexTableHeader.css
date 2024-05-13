@@ -60,6 +60,12 @@
   flex: 0 0 150px;
 }
 
+.useAlternateTitlesForSearch {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 150px;
+}
+
 .episodeProgress,
 .latestSeason {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';

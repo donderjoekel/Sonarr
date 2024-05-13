@@ -18,6 +18,7 @@ interface SavePayload {
   qualityProfileId?: number;
   seriesType?: string;
   seasonFolder?: boolean;
+  useAlternateTitlesForSearch?: boolean;
   rootFolderPath?: string;
   moveFiles?: boolean;
 }
@@ -74,6 +75,28 @@ const seasonFolderOptions = [
   },
 ];
 
+const useAlternateTitlesForSearchOptions = [
+  {
+    key: NO_CHANGE,
+    get value() {
+      return translate('NoChange');
+    },
+    isDisabled: true,
+  },
+  {
+    key: 'yes',
+    get value() {
+      return translate('Yes');
+    },
+  },
+  {
+    key: 'no',
+    get value() {
+      return translate('No');
+    },
+  },
+];
+
 function EditSeriesModalContent(props: EditSeriesModalContentProps) {
   const { seriesIds, onSavePress, onModalClose } = props;
 
@@ -84,6 +107,8 @@ function EditSeriesModalContent(props: EditSeriesModalContentProps) {
   );
   const [seriesType, setSeriesType] = useState(NO_CHANGE);
   const [seasonFolder, setSeasonFolder] = useState(NO_CHANGE);
+  const [useAlternateTitlesForSearch, setUseAlternateTitlesForSearch] =
+    useState(NO_CHANGE);
   const [rootFolderPath, setRootFolderPath] = useState(NO_CHANGE);
   const [isConfirmMoveModalOpen, setIsConfirmMoveModalOpen] = useState(false);
 
@@ -117,6 +142,12 @@ function EditSeriesModalContent(props: EditSeriesModalContentProps) {
         payload.seasonFolder = seasonFolder === 'yes';
       }
 
+      if (useAlternateTitlesForSearch !== NO_CHANGE) {
+        hasChanges = true;
+        payload.useAlternateTitlesForSearch =
+          useAlternateTitlesForSearch === 'yes';
+      }
+
       if (rootFolderPath !== NO_CHANGE) {
         hasChanges = true;
         payload.rootFolderPath = rootFolderPath;
@@ -135,6 +166,7 @@ function EditSeriesModalContent(props: EditSeriesModalContentProps) {
       qualityProfileId,
       seriesType,
       seasonFolder,
+      useAlternateTitlesForSearch,
       rootFolderPath,
       onSavePress,
       onModalClose,
@@ -158,6 +190,9 @@ function EditSeriesModalContent(props: EditSeriesModalContentProps) {
           break;
         case 'seasonFolder':
           setSeasonFolder(value);
+          break;
+        case 'useAlternateTitlesForSearch':
+          setUseAlternateTitlesForSearch(value);
           break;
         case 'rootFolderPath':
           setRootFolderPath(value);
@@ -258,6 +293,18 @@ function EditSeriesModalContent(props: EditSeriesModalContentProps) {
             name="seasonFolder"
             value={seasonFolder}
             values={seasonFolderOptions}
+            onChange={onInputChange}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel>{translate('UseAlternateTitlesForSearch')}</FormLabel>
+
+          <FormInputGroup
+            type={inputTypes.SELECT}
+            name="useAlternateTitlesForSearch"
+            value={useAlternateTitlesForSearch}
+            values={useAlternateTitlesForSearchOptions}
             onChange={onInputChange}
           />
         </FormGroup>
