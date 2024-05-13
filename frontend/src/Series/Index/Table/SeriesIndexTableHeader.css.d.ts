@@ -25,6 +25,7 @@ interface CssExports {
   'sortTitle': string;
   'status': string;
   'tags': string;
+  'useAlternateTitlesForSearch': string;
   'useSceneNumbering': string;
   'year': string;
 }

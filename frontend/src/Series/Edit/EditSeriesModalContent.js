@@ -78,6 +78,7 @@ class EditSeriesModalContent extends Component {
       monitored,
       monitorNewItems,
       seasonFolder,
+      useAlternateTitlesForSearch,
       qualityProfileId,
       seriesType,
       path,
@@ -137,6 +138,18 @@ class EditSeriesModalContent extends Component {
                 name="seasonFolder"
                 helpText={translate('UseSeasonFolderHelpText')}
                 {...seasonFolder}
+                onChange={onInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('UseAlternateTitlesForSearch')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="useAlternateTitlesForSearch"
+                helpText={translate('UseAlternateTitlesForSearchHelpText')}
+                {...useAlternateTitlesForSearch}
                 onChange={onInputChange}
               />
             </FormGroup>

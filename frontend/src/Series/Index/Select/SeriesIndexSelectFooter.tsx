@@ -28,6 +28,7 @@ interface SavePayload {
   qualityProfileId?: number;
   seriesType?: string;
   seasonFolder?: boolean;
+  useAlternateTitlesForSearch?: boolean;
   rootFolderPath?: string;
   moveFiles?: boolean;
 }

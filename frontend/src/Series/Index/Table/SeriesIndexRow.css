@@ -96,6 +96,12 @@
   flex: 0 0 150px;
 }
 
+.useAlternateTitlesForSearch {
+  composes: cell;
+
+  flex: 0 0 150px;
+}
+
 .episodeProgress,
 .latestSeason {
   composes: cell;

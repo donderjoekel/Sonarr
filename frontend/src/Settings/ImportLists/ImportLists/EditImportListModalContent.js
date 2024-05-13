@@ -57,6 +57,7 @@ function EditImportListModalContent(props) {
     qualityProfileId,
     seriesType,
     seasonFolder,
+    useAlternateTitlesForSearch,
     tags,
     fields
   } = item;
@@ -238,6 +239,17 @@ function EditImportListModalContent(props) {
                   name="seasonFolder"
                   onChange={onInputChange}
                   {...seasonFolder}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>{translate('UseAlternateTitlesForSearch')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="useAlternateTitlesForSearch"
+                  onChange={onInputChange}
+                  {...useAlternateTitlesForSearch}
                 />
               </FormGroup>
 

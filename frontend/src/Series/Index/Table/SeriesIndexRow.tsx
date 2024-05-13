@@ -63,6 +63,7 @@ function SeriesIndexRow(props: SeriesIndexRowProps) {
     added,
     statistics = {} as Statistics,
     seasonFolder,
+    useAlternateTitlesForSearch,
     images,
     seriesType,
     network,
@@ -306,6 +307,19 @@ function SeriesIndexRow(props: SeriesIndexRowProps) {
               <CheckInput
                 name="seasonFolder"
                 value={seasonFolder}
+                isDisabled={true}
+                onChange={checkInputCallback}
+              />
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'useAlternateTitlesForSearch') {
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              <CheckInput
+                name="useAlternateTitlesForSearch"
+                value={useAlternateTitlesForSearch}
                 isDisabled={true}
                 onChange={checkInputCallback}
               />

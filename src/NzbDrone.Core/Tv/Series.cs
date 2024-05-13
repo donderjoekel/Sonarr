@@ -36,6 +36,7 @@ namespace NzbDrone.Core.Tv
         public NewItemMonitorTypes MonitorNewItems { get; set; }
         public int QualityProfileId { get; set; }
         public bool SeasonFolder { get; set; }
+        public bool UseAlternateTitlesForSearch { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public int Runtime { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
@@ -74,6 +75,7 @@ namespace NzbDrone.Core.Tv
             QualityProfileId = otherSeries.QualityProfileId;
 
             SeasonFolder = otherSeries.SeasonFolder;
+            UseAlternateTitlesForSearch = otherSeries.UseAlternateTitlesForSearch;
             Monitored = otherSeries.Monitored;
             MonitorNewItems = otherSeries.MonitorNewItems;
 

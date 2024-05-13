@@ -7,6 +7,7 @@ function getNewSeries(series, payload) {
     qualityProfileId,
     seriesType,
     seasonFolder,
+    useAlternateTitlesForSearch,
     tags,
     searchForMissingEpisodes = false,
     searchForCutoffUnmetEpisodes = false
@@ -25,6 +26,7 @@ function getNewSeries(series, payload) {
   series.rootFolderPath = rootFolderPath;
   series.seriesType = seriesType;
   series.seasonFolder = seasonFolder;
+  series.useAlternateTitlesForSearch = useAlternateTitlesForSearch;
   series.tags = tags;
 
   return series;
