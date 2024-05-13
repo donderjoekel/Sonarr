@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Web;
 using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
@@ -93,9 +94,9 @@ public class BakaUpdatesProxy : ISearchForNewSeries, IProvideSeriesInfo
         // MANGARR TODO: Should this be added?
         // series.BakaUpdatesSlug = Parser.Parser.ParseBakaUpdatesSlug(resource.Url);
 
-        series.Title = resource.Title;
-        series.CleanTitle = Parser.Parser.CleanSeriesTitle(resource.Title);
-        series.SortTitle = SeriesTitleNormalizer.Normalize(resource.Title, -1);
+        series.Title = HttpUtility.HtmlDecode(resource.Title);
+        series.CleanTitle = Parser.Parser.CleanSeriesTitle(series.Title);
+        series.SortTitle = SeriesTitleNormalizer.Normalize(series.Title, -1);
 
         if (resource.LastUpdated != null)
         {
