@@ -36,11 +36,11 @@ namespace NzbDrone.Core.Tv
         public NewItemMonitorTypes MonitorNewItems { get; set; }
         public int QualityProfileId { get; set; }
         public bool SeasonFolder { get; set; }
+        public bool UseAlternateTitlesForSearch { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public int Runtime { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
         public SeriesTypes SeriesType { get; set; }
-        public bool UseAlternateTitlesForSearch { get; set; }
         public string Network { get; set; }
         public bool UseSceneNumbering { get; set; }
         public string TitleSlug { get; set; }
@@ -75,6 +75,7 @@ namespace NzbDrone.Core.Tv
             QualityProfileId = otherSeries.QualityProfileId;
 
             SeasonFolder = otherSeries.SeasonFolder;
+            UseAlternateTitlesForSearch = otherSeries.UseAlternateTitlesForSearch;
             Monitored = otherSeries.Monitored;
             MonitorNewItems = otherSeries.MonitorNewItems;
 
@@ -82,8 +83,6 @@ namespace NzbDrone.Core.Tv
             RootFolderPath = otherSeries.RootFolderPath;
             Tags = otherSeries.Tags;
             AddOptions = otherSeries.AddOptions;
-
-            UseAlternateTitlesForSearch = otherSeries.UseAlternateTitlesForSearch;
         }
     }
 }

@@ -13,6 +13,7 @@ namespace NzbDrone.Core.ImportLists
         public int QualityProfileId { get; set; }
         public SeriesTypes SeriesType { get; set; }
         public bool SeasonFolder { get; set; }
+        public bool UseAlternateTitlesForSearch { get; set; }
         public string RootFolderPath { get; set; }
 
         public override bool Enable => EnableAutomaticAdd;

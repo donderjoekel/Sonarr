@@ -118,6 +118,7 @@ namespace Sonarr.Api.V3.Series
                        QualityProfileId = model.QualityProfileId,
 
                        SeasonFolder = model.SeasonFolder,
+                       UseAlternateTitlesForSearch = model.UseAlternateTitlesForSearch,
                        Monitored = model.Monitored,
                        MonitorNewItems = model.MonitorNewItems,
 
@@ -129,7 +130,6 @@ namespace Sonarr.Api.V3.Series
                        FirstAired = model.FirstAired,
                        LastAired = model.LastAired,
                        SeriesType = model.SeriesType,
-                       UseAlternateTitlesForSearch = model.UseAlternateTitlesForSearch,
                        CleanTitle = model.CleanTitle,
                        ImdbId = model.ImdbId,
                        TitleSlug = model.TitleSlug,
@@ -183,6 +183,7 @@ namespace Sonarr.Api.V3.Series
                        QualityProfileId = resource.QualityProfileId,
 
                        SeasonFolder = resource.SeasonFolder,
+                       UseAlternateTitlesForSearch = resource.UseAlternateTitlesForSearch,
                        Monitored = resource.Monitored,
                        MonitorNewItems = resource.MonitorNewItems,
 
