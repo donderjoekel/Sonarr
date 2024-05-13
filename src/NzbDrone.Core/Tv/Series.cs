@@ -40,6 +40,7 @@ namespace NzbDrone.Core.Tv
         public int Runtime { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
         public SeriesTypes SeriesType { get; set; }
+        public bool UseAlternateTitlesForSearch { get; set; }
         public string Network { get; set; }
         public bool UseSceneNumbering { get; set; }
         public string TitleSlug { get; set; }
@@ -81,6 +82,8 @@ namespace NzbDrone.Core.Tv
             RootFolderPath = otherSeries.RootFolderPath;
             Tags = otherSeries.Tags;
             AddOptions = otherSeries.AddOptions;
+
+            UseAlternateTitlesForSearch = otherSeries.UseAlternateTitlesForSearch;
         }
     }
 }

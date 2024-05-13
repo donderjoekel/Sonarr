@@ -56,6 +56,7 @@ namespace Sonarr.Api.V3.Series
         public DateTime? FirstAired { get; set; }
         public DateTime? LastAired { get; set; }
         public SeriesTypes SeriesType { get; set; }
+        public bool UseAlternateTitlesForSearch { get; set; }
         public string CleanTitle { get; set; }
         public string ImdbId { get; set; }
         public string TitleSlug { get; set; }
@@ -128,6 +129,7 @@ namespace Sonarr.Api.V3.Series
                        FirstAired = model.FirstAired,
                        LastAired = model.LastAired,
                        SeriesType = model.SeriesType,
+                       UseAlternateTitlesForSearch = model.UseAlternateTitlesForSearch,
                        CleanTitle = model.CleanTitle,
                        ImdbId = model.ImdbId,
                        TitleSlug = model.TitleSlug,
