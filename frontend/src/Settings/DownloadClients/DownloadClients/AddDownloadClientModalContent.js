@@ -23,7 +23,6 @@ class AddDownloadClientModalContent extends Component {
       isSchemaFetching,
       isSchemaPopulated,
       schemaError,
-      usenetDownloadClients,
       torrentDownloadClients,
       onDownloadClientSelect,
       onModalClose
@@ -61,23 +60,6 @@ class AddDownloadClientModalContent extends Component {
                   </div>
                 </Alert>
 
-                <FieldSet legend={translate('Usenet')}>
-                  <div className={styles.downloadClients}>
-                    {
-                      usenetDownloadClients.map((downloadClient) => {
-                        return (
-                          <AddDownloadClientItem
-                            key={downloadClient.implementation}
-                            implementation={downloadClient.implementation}
-                            {...downloadClient}
-                            onDownloadClientSelect={onDownloadClientSelect}
-                          />
-                        );
-                      })
-                    }
-                  </div>
-                </FieldSet>
-
                 <FieldSet legend={translate('Torrents')}>
                   <div className={styles.downloadClients}>
                     {
@@ -113,7 +95,6 @@ AddDownloadClientModalContent.propTypes = {
   isSchemaFetching: PropTypes.bool.isRequired,
   isSchemaPopulated: PropTypes.bool.isRequired,
   schemaError: PropTypes.object,
-  usenetDownloadClients: PropTypes.arrayOf(PropTypes.object).isRequired,
   torrentDownloadClients: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDownloadClientSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired

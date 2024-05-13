@@ -17,14 +17,12 @@ function createMapStateToProps() {
         schema
       } = downloadClients;
 
-      const usenetDownloadClients = _.filter(schema, { protocol: 'usenet' });
       const torrentDownloadClients = _.filter(schema, { protocol: 'torrent' });
 
       return {
         isSchemaFetching,
         isSchemaPopulated,
         schemaError,
-        usenetDownloadClients,
         torrentDownloadClients
       };
     }
