@@ -182,16 +182,18 @@ public class BakaUpdatesProxy : ISearchForNewSeries, IProvideSeriesInfo
 
     private Series MapManga(SeriesGetResult resource)
     {
+        var decodedTitle = HttpUtility.HtmlDecode(resource.Title);
+
         return new Series()
         {
             TvdbId = resource.SeriesId,
 
             // MANGARR TODO: Should this be added?
             // BakaUpdatesSlug = Parser.Parser.ParseBakaUpdatesSlug(resource.Url),
-            Title = resource.Title,
+            Title = decodedTitle,
             TitleSlug = Parser.Parser.ParseBakaUpdatesTitleSlug(resource.Url),
-            CleanTitle = Parser.Parser.CleanSeriesTitle(resource.Title),
-            SortTitle = Parser.Parser.NormalizeTitle(resource.Title),
+            CleanTitle = Parser.Parser.CleanSeriesTitle(decodedTitle),
+            SortTitle = Parser.Parser.NormalizeTitle(decodedTitle),
             LastAired = DateTimeOffset.FromUnixTimeSeconds(resource.LastUpdated.Timestamp).UtcDateTime,
             Year = resource.Year.ParseInt32() ?? 0,
             Overview = resource.Description,
