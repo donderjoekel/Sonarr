@@ -93,8 +93,6 @@ namespace Sonarr.Api.V3.Series
                          .When(s => s.Path.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.Title).NotEmpty();
             PostValidator.RuleFor(s => s.TvdbId).GreaterThan(0).SetValidator(seriesExistsValidator);
-
-            PutValidator.RuleFor(s => s.Path).IsValidPath();
         }
 
         [HttpGet]
@@ -159,7 +157,7 @@ namespace Sonarr.Api.V3.Series
 
         [RestPostById]
         [Consumes("application/json")]
-        public ActionResult<SeriesResource> AddSeries(SeriesResource seriesResource)
+        public ActionResult<SeriesResource> AddSeries([FromBody] SeriesResource seriesResource)
         {
             var series = _addSeriesService.AddSeries(seriesResource.ToModel());
 
@@ -168,7 +166,7 @@ namespace Sonarr.Api.V3.Series
 
         [RestPutById]
         [Consumes("application/json")]
-        public ActionResult<SeriesResource> UpdateSeries(SeriesResource seriesResource, bool moveFiles = false)
+        public ActionResult<SeriesResource> UpdateSeries([FromBody] SeriesResource seriesResource, [FromQuery] bool moveFiles = false)
         {
             var series = _seriesService.GetSeries(seriesResource.Id);
 

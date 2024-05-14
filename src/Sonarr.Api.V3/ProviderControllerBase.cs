@@ -205,10 +205,10 @@ namespace Sonarr.Api.V3
         [SkipValidation(true, false)]
         [HttpPost("test")]
         [Consumes("application/json")]
-        public object Test([FromBody] TProviderResource providerResource)
+        public object Test([FromBody] TProviderResource providerResource, [FromQuery] bool forceTest = false)
         {
             var existingDefinition = providerResource.Id > 0 ? _providerFactory.Find(providerResource.Id) : null;
-            var providerDefinition = GetDefinition(providerResource, existingDefinition, true, true, true);
+            var providerDefinition = GetDefinition(providerResource, existingDefinition, true, !forceTest, true);
 
             Test(providerDefinition, true);
 
@@ -245,7 +245,7 @@ namespace Sonarr.Api.V3
         [HttpPost("action/{name}")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public IActionResult RequestAction(string name, [FromBody] TProviderResource providerResource)
+        public IActionResult RequestAction([FromRoute] string name, [FromBody] TProviderResource providerResource)
         {
             var existingDefinition = providerResource.Id > 0 ? _providerFactory.Find(providerResource.Id) : null;
             var providerDefinition = GetDefinition(providerResource, existingDefinition, false, false, false);

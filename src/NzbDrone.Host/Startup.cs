@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using DryIoc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -26,6 +27,7 @@ using NzbDrone.SignalR;
 using Sonarr.Api.V3.System;
 using Sonarr.Http;
 using Sonarr.Http.Authentication;
+using Sonarr.Http.ClientSchema;
 using Sonarr.Http.ErrorManagement;
 using Sonarr.Http.Frontend;
 using Sonarr.Http.Middleware;
@@ -56,7 +58,7 @@ namespace NzbDrone.Host
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
                 options.KnownNetworks.Clear();
                 options.KnownProxies.Clear();
             });
@@ -193,6 +195,7 @@ namespace NzbDrone.Host
         }
 
         public void Configure(IApplicationBuilder app,
+                              IContainer container,
                               IStartupContext startupContext,
                               Lazy<IMainDatabase> mainDatabaseFactory,
                               Lazy<ILogDatabase> logDatabaseFactory,
@@ -220,9 +223,14 @@ namespace NzbDrone.Host
 
             // instantiate the databases to initialize/migrate them
             _ = mainDatabaseFactory.Value;
-            _ = logDatabaseFactory.Value;
 
-            dbTarget.Register();
+            if (configFileProvider.LogDbEnabled)
+            {
+                _ = logDatabaseFactory.Value;
+                dbTarget.Register();
+            }
+
+            SchemaBuilder.Initialize(container);
 
             if (OsInfo.IsNotWindows)
             {
