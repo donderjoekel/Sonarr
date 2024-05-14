@@ -23,7 +23,6 @@ class AddIndexerModalContent extends Component {
       isSchemaFetching,
       isSchemaPopulated,
       schemaError,
-      usenetIndexers,
       torrentIndexers,
       onIndexerSelect,
       onModalClose
@@ -61,23 +60,6 @@ class AddIndexerModalContent extends Component {
                   </div>
                 </Alert>
 
-                <FieldSet legend={translate('Usenet')}>
-                  <div className={styles.indexers}>
-                    {
-                      usenetIndexers.map((indexer) => {
-                        return (
-                          <AddIndexerItem
-                            key={indexer.implementation}
-                            implementation={indexer.implementation}
-                            {...indexer}
-                            onIndexerSelect={onIndexerSelect}
-                          />
-                        );
-                      })
-                    }
-                  </div>
-                </FieldSet>
-
                 <FieldSet legend={translate('Torrents')}>
                   <div className={styles.indexers}>
                     {
@@ -113,7 +95,6 @@ AddIndexerModalContent.propTypes = {
   isSchemaFetching: PropTypes.bool.isRequired,
   isSchemaPopulated: PropTypes.bool.isRequired,
   schemaError: PropTypes.object,
-  usenetIndexers: PropTypes.arrayOf(PropTypes.object).isRequired,
   torrentIndexers: PropTypes.arrayOf(PropTypes.object).isRequired,
   onIndexerSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired

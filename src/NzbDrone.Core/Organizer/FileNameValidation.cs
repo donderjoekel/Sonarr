@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Organizer
             }
 
             return FileNameBuilder.SeasonEpisodePatternRegex.IsMatch(value) ||
-                   (FileNameBuilder.SeasonRegex.IsMatch(value) && FileNameBuilder.EpisodeRegex.IsMatch(value)) ||
+                   FileNameBuilder.EpisodeRegex.IsMatch(value) ||
                    FileNameValidation.OriginalTokenRegex.IsMatch(value);
         }
     }

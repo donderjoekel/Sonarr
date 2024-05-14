@@ -17,13 +17,16 @@ namespace NzbDrone.Core.Tv
             Seasons = new List<Season>();
             Tags = new HashSet<int>();
             OriginalLanguage = Language.English;
+            AlternateTitles = new List<string>();
         }
 
-        public int TvdbId { get; set; }
+        // MANGARR: This has been repurposed to be the Baka Updates ID
+        public long TvdbId { get; set; }
         public int TvRageId { get; set; }
         public int TvMazeId { get; set; }
         public string ImdbId { get; set; }
         public string Title { get; set; }
+        public List<string> AlternateTitles { get; set; }
         public string CleanTitle { get; set; }
         public string SortTitle { get; set; }
         public SeriesStatusType Status { get; set; }
@@ -33,6 +36,7 @@ namespace NzbDrone.Core.Tv
         public NewItemMonitorTypes MonitorNewItems { get; set; }
         public int QualityProfileId { get; set; }
         public bool SeasonFolder { get; set; }
+        public bool UseAlternateTitlesForSearch { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public int Runtime { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
@@ -71,6 +75,7 @@ namespace NzbDrone.Core.Tv
             QualityProfileId = otherSeries.QualityProfileId;
 
             SeasonFolder = otherSeries.SeasonFolder;
+            UseAlternateTitlesForSearch = otherSeries.UseAlternateTitlesForSearch;
             Monitored = otherSeries.Monitored;
             MonitorNewItems = otherSeries.MonitorNewItems;
 

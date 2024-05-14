@@ -59,6 +59,7 @@ interface Series extends ModelBase {
   rootFolderPath: string;
   runtime: number;
   seasonFolder: boolean;
+  useAlternateTitlesForSearch: boolean;
   seasons: Season[];
   seriesType: SeriesType;
   sortTitle: string;

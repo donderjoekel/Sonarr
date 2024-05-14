@@ -4,7 +4,7 @@ namespace NzbDrone.Core.Tv
 {
     public static class SeriesTitleNormalizer
     {
-        private static readonly Dictionary<int, string> PreComputedTitles = new Dictionary<int, string>
+        private static readonly Dictionary<long, string> PreComputedTitles = new Dictionary<long, string>
                                                                      {
                                                                          { 281588, "a to z" },
                                                                          { 289260, "ad bible continues" },
@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Tv
                                                                          { 77904, "ateam" }
                                                                      };
 
-        public static string Normalize(string title, int tvdbId)
+        public static string Normalize(string title, long tvdbId)
         {
             if (PreComputedTitles.ContainsKey(tvdbId))
             {

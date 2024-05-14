@@ -1,4 +1,3 @@
-using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -68,26 +67,28 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
         public bool UpdateMediaInfo(EpisodeFile episodeFile, Series series)
         {
-            var path = Path.Combine(series.Path, episodeFile.RelativePath);
+            return false;
 
-            if (!_diskProvider.FileExists(path))
-            {
-                _logger.Debug("Can't update MediaInfo because '{0}' does not exist", path);
-                return false;
-            }
-
-            var updatedMediaInfo = _videoFileInfoReader.GetMediaInfo(path);
-
-            if (updatedMediaInfo == null)
-            {
-                return false;
-            }
-
-            episodeFile.MediaInfo = updatedMediaInfo;
-            _mediaFileService.Update(episodeFile);
-            _logger.Debug("Updated MediaInfo for '{0}'", path);
-
-            return true;
+            // var path = Path.Combine(series.Path, episodeFile.RelativePath);
+            //
+            // if (!_diskProvider.FileExists(path))
+            // {
+            //     _logger.Debug("Can't update MediaInfo because '{0}' does not exist", path);
+            //     return false;
+            // }
+            //
+            // var updatedMediaInfo = _videoFileInfoReader.GetMediaInfo(path);
+            //
+            // if (updatedMediaInfo == null)
+            // {
+            //     return false;
+            // }
+            //
+            // episodeFile.MediaInfo = updatedMediaInfo;
+            // _mediaFileService.Update(episodeFile);
+            // _logger.Debug("Updated MediaInfo for '{0}'", path);
+            //
+            // return true;
         }
     }
 }

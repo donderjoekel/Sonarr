@@ -9,7 +9,7 @@ namespace NzbDrone.Core.ImportLists.ImportListItems
     public interface IImportListItemInfoRepository : IBasicRepository<ImportListItemInfo>
     {
         List<ImportListItemInfo> GetAllForLists(List<int> listIds);
-        bool Exists(int tvdbId, string imdbId);
+        bool Exists(long tvdbId, string imdbId);
     }
 
     public class ImportListItemRepository : BasicRepository<ImportListItemInfo>, IImportListItemInfoRepository
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.ImportLists.ImportListItems
             return Query(x => listIds.Contains(x.ImportListId));
         }
 
-        public bool Exists(int tvdbId, string imdbId)
+        public bool Exists(long tvdbId, string imdbId)
         {
             List<ImportListItemInfo> items;
 

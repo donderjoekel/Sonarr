@@ -55,10 +55,10 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Aggregation
             localEpisode.Size = _diskProvider.GetFileSize(localEpisode.Path);
             localEpisode.SceneName = localEpisode.SceneSource ? SceneNameCalculator.GetSceneName(localEpisode) : null;
 
-            if (isMediaFile && (!localEpisode.ExistingFile || _configService.EnableMediaInfo))
-            {
-                localEpisode.MediaInfo = _videoFileInfoReader.GetMediaInfo(localEpisode.Path);
-            }
+            // if (isMediaFile && (!localEpisode.ExistingFile || _configService.EnableMediaInfo))
+            // {
+            //     localEpisode.MediaInfo = _videoFileInfoReader.GetMediaInfo(localEpisode.Path);
+            // }
 
             foreach (var augmenter in _augmenters)
             {

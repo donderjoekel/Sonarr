@@ -60,6 +60,7 @@ class AddNewSeriesModalContentConnector extends Component {
       monitor,
       qualityProfileId,
       seasonFolder,
+      useAlternateTitlesForSearch,
       searchForMissingEpisodes,
       searchForCutoffUnmetEpisodes,
       tags
@@ -72,6 +73,7 @@ class AddNewSeriesModalContentConnector extends Component {
       qualityProfileId: qualityProfileId.value,
       seriesType,
       seasonFolder: seasonFolder.value,
+      useAlternateTitlesForSearch: useAlternateTitlesForSearch.value,
       searchForMissingEpisodes: searchForMissingEpisodes.value,
       searchForCutoffUnmetEpisodes: searchForCutoffUnmetEpisodes.value,
       tags: tags.value
@@ -99,6 +101,7 @@ AddNewSeriesModalContentConnector.propTypes = {
   qualityProfileId: PropTypes.object,
   seriesType: PropTypes.object.isRequired,
   seasonFolder: PropTypes.object.isRequired,
+  useAlternateTitlesForSearch: PropTypes.object.isRequired,
   searchForMissingEpisodes: PropTypes.object.isRequired,
   searchForCutoffUnmetEpisodes: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,

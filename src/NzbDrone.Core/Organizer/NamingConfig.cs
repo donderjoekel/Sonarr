@@ -6,15 +6,15 @@ namespace NzbDrone.Core.Organizer
     {
         public static NamingConfig Default => new NamingConfig
         {
-            RenameEpisodes = false,
+            RenameEpisodes = true,
             ReplaceIllegalCharacters = true,
             ColonReplacementFormat = ColonReplacementFormat.Smart,
             MultiEpisodeStyle = MultiEpisodeStyle.PrefixedRange,
-            StandardEpisodeFormat = "{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}",
+            StandardEpisodeFormat = "{Series Title} - Chapter {episode:00}",
             DailyEpisodeFormat = "{Series Title} - {Air-Date} - {Episode Title} {Quality Full}",
             AnimeEpisodeFormat = "{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}",
             SeriesFolderFormat = "{Series Title}",
-            SeasonFolderFormat = "Season {season}",
+            SeasonFolderFormat = "Volume {season}",
             SpecialsFolderFormat = "Specials"
         };
 

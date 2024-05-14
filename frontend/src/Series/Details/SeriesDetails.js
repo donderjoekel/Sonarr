@@ -1,8 +1,8 @@
+import { Markup } from 'interweave';
 import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import TextTruncate from 'react-text-truncate';
 import Alert from 'Components/Alert';
 import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
@@ -30,7 +30,6 @@ import MonitoringOptionsModal from 'Series/MonitoringOptions/MonitoringOptionsMo
 import SeriesPoster from 'Series/SeriesPoster';
 import { getSeriesStatusDetails } from 'Series/SeriesStatus';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
-import fonts from 'Styles/Variables/fonts';
 import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
 import selectAll from 'Utilities/Table/selectAll';
@@ -41,9 +40,6 @@ import SeriesDetailsSeasonConnector from './SeriesDetailsSeasonConnector';
 import SeriesGenres from './SeriesGenres';
 import SeriesTagsConnector from './SeriesTagsConnector';
 import styles from './SeriesDetails.css';
-
-const defaultFontSize = parseInt(fonts.defaultFontSize);
-const lineHeight = parseFloat(fonts.lineHeight);
 
 function getFanartUrl(images) {
   return _.find(images, { coverType: 'fanart' })?.url;
@@ -223,8 +219,7 @@ class SeriesDetails extends Component {
       isMonitorOptionsModalOpen,
       allExpanded,
       allCollapsed,
-      expandedState,
-      overviewHeight
+      expandedState
     } = this.state;
 
     const statusDetails = getSeriesStatusDetails(status);
@@ -600,10 +595,7 @@ class SeriesDetails extends Component {
 
                 <Measure onMeasure={this.onMeasure}>
                   <div className={styles.overview}>
-                    <TextTruncate
-                      line={Math.floor(overviewHeight / (defaultFontSize * lineHeight)) - 1}
-                      text={overview}
-                    />
+                    <Markup content={overview} />
                   </div>
                 </Measure>
 

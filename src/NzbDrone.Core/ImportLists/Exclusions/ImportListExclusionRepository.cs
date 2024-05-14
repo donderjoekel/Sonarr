@@ -6,7 +6,7 @@ namespace NzbDrone.Core.ImportLists.Exclusions
 {
     public interface IImportListExclusionRepository : IBasicRepository<ImportListExclusion>
     {
-        ImportListExclusion FindByTvdbId(int tvdbId);
+        ImportListExclusion FindByTvdbId(long tvdbId);
     }
 
     public class ImportListExclusionRepository : BasicRepository<ImportListExclusion>, IImportListExclusionRepository
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.ImportLists.Exclusions
         {
         }
 
-        public ImportListExclusion FindByTvdbId(int tvdbId)
+        public ImportListExclusion FindByTvdbId(long tvdbId)
         {
             return Query(m => m.TvdbId == tvdbId).SingleOrDefault();
         }

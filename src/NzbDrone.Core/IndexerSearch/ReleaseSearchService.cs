@@ -477,7 +477,17 @@ namespace NzbDrone.Core.IndexerSearch
             var spec = new TSpec();
 
             spec.Series = series;
-            spec.SceneTitles = mapping.SceneTitles;
+            spec.SceneTitles = new List<string>();
+            spec.SceneTitles.AddRange(mapping.SceneTitles);
+
+            if (series.UseAlternateTitlesForSearch)
+            {
+                spec.SceneTitles.AddRange(series.AlternateTitles);
+            }
+
+            spec.SceneTitles = spec.SceneTitles.Distinct().ToList();
+
+            // spec.SceneTitles = mapping.SceneTitles;
             spec.SearchMode = mapping.SearchMode;
 
             spec.Episodes = new List<Episode> { mapping.Episode };

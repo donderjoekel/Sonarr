@@ -558,7 +558,8 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             else if (SupportsTvQuerySearch)
             {
-                var queryTitles = TvTextSearchEngine == "raw" ? searchCriteria.SceneTitles : searchCriteria.CleanSceneTitles;
+                // MANGARR: Changed this to just SceneTitles because of all the different formats that can be used
+                var queryTitles = searchCriteria.SceneTitles;
                 foreach (var queryTitle in queryTitles)
                 {
                     chain.Add(GetPagedRequests(MaxPages,

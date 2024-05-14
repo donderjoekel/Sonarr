@@ -210,7 +210,7 @@ namespace NzbDrone.Core.MediaFiles
 
             if (scriptImportInfo.Decision == ScriptImportDecision.RenameRequested)
             {
-                episodeFile.MediaInfo = _videoFileInfoReader.GetMediaInfo(mediaFile);
+                // episodeFile.MediaInfo = _videoFileInfoReader.GetMediaInfo(mediaFile);
                 episodeFile.Path = null;
             }
 

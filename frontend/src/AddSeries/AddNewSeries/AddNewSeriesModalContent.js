@@ -1,3 +1,4 @@
+import { Markup } from 'interweave';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import SeriesMonitoringOptionsPopoverContent from 'AddSeries/SeriesMonitoringOptionsPopoverContent';
@@ -73,6 +74,7 @@ class AddNewSeriesModalContent extends Component {
       qualityProfileId,
       seriesType,
       seasonFolder,
+      useAlternateTitlesForSearch,
       searchForMissingEpisodes,
       searchForCutoffUnmetEpisodes,
       folder,
@@ -113,7 +115,7 @@ class AddNewSeriesModalContent extends Component {
               {
                 overview ?
                   <div className={styles.overview}>
-                    {overview}
+                    <Markup content={overview} />
                   </div> :
                   null
               }
@@ -214,6 +216,18 @@ class AddNewSeriesModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
+                  <FormLabel>{translate('UseAlternateTitlesForSearch')}</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.CHECK}
+                    name="useAlternateTitlesForSearch"
+                    helpText={translate('UseAlternateTitlesForSearchHelpText')}
+                    {...useAlternateTitlesForSearch}
+                    onChange={onInputChange}
+                  />
+                </FormGroup>
+
+                <FormGroup>
                   <FormLabel>{translate('Tags')}</FormLabel>
 
                   <FormInputGroup
@@ -285,6 +299,7 @@ AddNewSeriesModalContent.propTypes = {
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
   seriesType: PropTypes.object.isRequired,
+  useAlternateTitlesForSearch: PropTypes.object.isRequired,
   seasonFolder: PropTypes.object.isRequired,
   searchForMissingEpisodes: PropTypes.object.isRequired,
   searchForCutoffUnmetEpisodes: PropTypes.object.isRequired,

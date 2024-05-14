@@ -1,3 +1,4 @@
+import { Markup } from 'interweave';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'Components/Icon';
@@ -137,9 +138,7 @@ class EpisodeSummary extends Component {
 
         <div className={styles.overview}>
           {
-            hasOverview ?
-              overview :
-              translate('NoEpisodeOverview')
+            hasOverview ? <Markup content={overview} /> : translate('NoEpisodeOverview')
           }
         </div>
 

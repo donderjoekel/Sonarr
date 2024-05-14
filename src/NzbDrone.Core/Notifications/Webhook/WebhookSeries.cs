@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         public string Title { get; set; }
         public string TitleSlug { get; set; }
         public string Path { get; set; }
-        public int TvdbId { get; set; }
+        public long TvdbId { get; set; }
         public int TvMazeId { get; set; }
         public string ImdbId { get; set; }
         public SeriesTypes Type { get; set; }

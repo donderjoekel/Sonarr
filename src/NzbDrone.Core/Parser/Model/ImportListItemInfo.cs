@@ -16,7 +16,9 @@ namespace NzbDrone.Core.Parser.Model
         public string ImportList { get; set; }
         public string Title { get; set; }
         public int Year { get; set; }
-        public int TvdbId { get; set; }
+
+        // MANGARR: This has been repurposed to be the Baka Updates ID
+        public long TvdbId { get; set; }
         public int TmdbId { get; set; }
         public string ImdbId { get; set; }
         public int MalId { get; set; }

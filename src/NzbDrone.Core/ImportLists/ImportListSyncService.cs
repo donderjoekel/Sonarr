@@ -245,6 +245,7 @@ namespace NzbDrone.Core.ImportLists
                         QualityProfileId = importList.QualityProfileId,
                         SeriesType = importList.SeriesType,
                         SeasonFolder = importList.SeasonFolder,
+                        UseAlternateTitlesForSearch = importList.UseAlternateTitlesForSearch,
                         Seasons = item.Seasons,
                         Tags = importList.Tags,
                         AddOptions = new AddSeriesOptions

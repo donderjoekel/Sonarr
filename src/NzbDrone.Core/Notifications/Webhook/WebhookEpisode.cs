@@ -30,6 +30,8 @@ namespace NzbDrone.Core.Notifications.Webhook
         public string AirDate { get; set; }
         public DateTime? AirDateUtc { get; set; }
         public int SeriesId { get; set; }
-        public int TvdbId { get; set; }
+
+        // MANGARR: This has been repurposed to be the Baka Updates ID
+        public long TvdbId { get; set; }
     }
 }

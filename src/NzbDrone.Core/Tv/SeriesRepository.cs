@@ -12,10 +12,10 @@ namespace NzbDrone.Core.Tv
         Series FindByTitle(string cleanTitle);
         Series FindByTitle(string cleanTitle, int year);
         List<Series> FindByTitleInexact(string cleanTitle);
-        Series FindByTvdbId(int tvdbId);
+        Series FindByTvdbId(long tvdbId);
         Series FindByTvRageId(int tvRageId);
         Series FindByPath(string path);
-        List<int> AllSeriesTvdbIds();
+        List<long> AllSeriesTvdbIds();
         Dictionary<int, string> AllSeriesPaths();
         Dictionary<int, List<int>> AllSeriesTags();
     }
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Tv
             return Query(builder).ToList();
         }
 
-        public Series FindByTvdbId(int tvdbId)
+        public Series FindByTvdbId(long tvdbId)
         {
             return Query(s => s.TvdbId == tvdbId).SingleOrDefault();
         }
@@ -79,11 +79,11 @@ namespace NzbDrone.Core.Tv
                         .FirstOrDefault();
         }
 
-        public List<int> AllSeriesTvdbIds()
+        public List<long> AllSeriesTvdbIds()
         {
             using (var conn = _database.OpenConnection())
             {
-                return conn.Query<int>("SELECT \"TvdbId\" FROM \"Series\"").ToList();
+                return conn.Query<long>("SELECT \"TvdbId\" FROM \"Series\"").ToList();
             }
         }
 

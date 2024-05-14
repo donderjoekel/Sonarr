@@ -48,12 +48,15 @@ namespace Sonarr.Api.V3.Series
 
         public bool UseSceneNumbering { get; set; }
         public int Runtime { get; set; }
-        public int TvdbId { get; set; }
+
+        // MANGARR: This has been repurposed to be the Baka Updates ID
+        public long TvdbId { get; set; }
         public int TvRageId { get; set; }
         public int TvMazeId { get; set; }
         public DateTime? FirstAired { get; set; }
         public DateTime? LastAired { get; set; }
         public SeriesTypes SeriesType { get; set; }
+        public bool UseAlternateTitlesForSearch { get; set; }
         public string CleanTitle { get; set; }
         public string ImdbId { get; set; }
         public string TitleSlug { get; set; }
@@ -115,6 +118,7 @@ namespace Sonarr.Api.V3.Series
                        QualityProfileId = model.QualityProfileId,
 
                        SeasonFolder = model.SeasonFolder,
+                       UseAlternateTitlesForSearch = model.UseAlternateTitlesForSearch,
                        Monitored = model.Monitored,
                        MonitorNewItems = model.MonitorNewItems,
 
@@ -179,6 +183,7 @@ namespace Sonarr.Api.V3.Series
                        QualityProfileId = resource.QualityProfileId,
 
                        SeasonFolder = resource.SeasonFolder,
+                       UseAlternateTitlesForSearch = resource.UseAlternateTitlesForSearch,
                        Monitored = resource.Monitored,
                        MonitorNewItems = resource.MonitorNewItems,
 

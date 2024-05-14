@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Tv
         List<Series> GetSeries(IEnumerable<int> seriesIds);
         Series AddSeries(Series newSeries);
         List<Series> AddSeries(List<Series> newSeries);
-        Series FindByTvdbId(int tvdbId);
+        Series FindByTvdbId(long tvdbId);
         Series FindByTvRageId(int tvRageId);
         Series FindByTitle(string title);
         Series FindByTitle(string title, int year);
@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Tv
         Series FindByPath(string path);
         void DeleteSeries(List<int> seriesIds, bool deleteFiles, bool addImportListExclusion);
         List<Series> GetAllSeries();
-        List<int> AllSeriesTvdbIds();
+        List<long> AllSeriesTvdbIds();
         Dictionary<int, string> GetAllSeriesPaths();
         Dictionary<int, List<int>> GetAllSeriesTags();
         List<Series> AllForTag(int tagId);
@@ -79,9 +79,9 @@ namespace NzbDrone.Core.Tv
             return newSeries;
         }
 
-        public Series FindByTvdbId(int tvRageId)
+        public Series FindByTvdbId(long tvdbId)
         {
-            return _seriesRepository.FindByTvdbId(tvRageId);
+            return _seriesRepository.FindByTvdbId(tvdbId);
         }
 
         public Series FindByTvRageId(int tvRageId)
@@ -160,7 +160,7 @@ namespace NzbDrone.Core.Tv
             return _seriesRepository.All().ToList();
         }
 
-        public List<int> AllSeriesTvdbIds()
+        public List<long> AllSeriesTvdbIds()
         {
             return _seriesRepository.AllSeriesTvdbIds().ToList();
         }

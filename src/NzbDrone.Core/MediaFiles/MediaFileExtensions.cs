@@ -66,7 +66,10 @@ namespace NzbDrone.Core.MediaFiles
                 { ".wtv", Quality.HDTV720p },
 
                 // Bluray
-                { ".m2ts", Quality.Bluray720p }
+                { ".m2ts", Quality.Bluray720p },
+
+                // CBZ
+                { ".cbz", Quality.Unknown },
             };
         }
 

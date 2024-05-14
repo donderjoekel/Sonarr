@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Indexers.Torznab
     {
         private readonly INewznabCapabilitiesProvider _capabilitiesProvider;
 
-        public override string Name => "Torznab";
+        public override string Name => "Sourcerarr";
 
         public override DownloadProtocol Protocol => DownloadProtocol.Torrent;
         public override int PageSize => GetProviderPageSize();

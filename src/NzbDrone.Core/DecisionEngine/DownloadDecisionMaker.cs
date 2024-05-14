@@ -12,6 +12,7 @@ using NzbDrone.Core.Download.Aggregation;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.DecisionEngine
 {
@@ -29,13 +30,15 @@ namespace NzbDrone.Core.DecisionEngine
         private readonly IRemoteEpisodeAggregationService _aggregationService;
         private readonly ISceneMappingService _sceneMappingService;
         private readonly Logger _logger;
+        private readonly ISeriesService _seriesService;
 
         public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications,
                                      IParsingService parsingService,
                                      ICustomFormatCalculationService formatService,
                                      IRemoteEpisodeAggregationService aggregationService,
                                      ISceneMappingService sceneMappingService,
-                                     Logger logger)
+                                     Logger logger,
+                                     ISeriesService seriesService)
         {
             _specifications = specifications;
             _parsingService = parsingService;
@@ -43,6 +46,7 @@ namespace NzbDrone.Core.DecisionEngine
             _aggregationService = aggregationService;
             _sceneMappingService = sceneMappingService;
             _logger = logger;
+            _seriesService = seriesService;
         }
 
         public List<DownloadDecision> GetRssDecision(List<ReleaseInfo> reports, bool pushedRelease = false)
@@ -96,11 +100,14 @@ namespace NzbDrone.Core.DecisionEngine
                         if (remoteEpisode.Series == null)
                         {
                             var reason = "Unknown Series";
-                            var matchingTvdbId = _sceneMappingService.FindTvdbId(parsedEpisodeInfo.SeriesTitle, parsedEpisodeInfo.ReleaseTitle, parsedEpisodeInfo.SeasonNumber);
+                            var matchingTvdbId = _sceneMappingService.FindTvdbId(parsedEpisodeInfo.SeriesTitle,
+                                parsedEpisodeInfo.ReleaseTitle,
+                                parsedEpisodeInfo.SeasonNumber);
 
                             if (matchingTvdbId.HasValue)
                             {
-                                reason = $"{parsedEpisodeInfo.SeriesTitle} matches an alias for series with TVDB ID: {matchingTvdbId}";
+                                reason =
+                                    $"{parsedEpisodeInfo.SeriesTitle} matches an alias for series with TVDB ID: {matchingTvdbId}";
                             }
 
                             decision = new DownloadDecision(remoteEpisode, new Rejection(reason));

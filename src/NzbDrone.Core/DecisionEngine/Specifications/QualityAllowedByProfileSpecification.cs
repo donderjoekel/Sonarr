@@ -4,7 +4,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
-    public class QualityAllowedByProfileSpecification : IDecisionEngineSpecification
+    public class QualityAllowedByProfileSpecification // : IDecisionEngineSpecification
     {
         private readonly Logger _logger;
 

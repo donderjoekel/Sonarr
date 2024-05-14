@@ -36,6 +36,7 @@ export const defaultState = {
     qualityProfileId: 0,
     seriesType: seriesTypes.STANDARD,
     seasonFolder: true,
+    useAlternateTitlesForSearch: false,
     searchForMissingEpisodes: false,
     searchForCutoffUnmetEpisodes: false,
     tags: []
